@@ -1,4 +1,6 @@
-Bun.serve({
+const port = process.env.PORT || "3000";
+
+const server = Bun.serve({
   routes: {
     "/": new Response("OK"),
     "/.well-known/stellar.toml": new Response(
@@ -11,5 +13,9 @@ Bun.serve({
       },
     ),
   },
-  port: process.env.PORT || "3000",
+  port: port,
 });
+
+process.on("SIGINT", () => server.stop(true));
+
+console.info("server started on", port);
